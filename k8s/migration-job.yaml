@@ -1,0 +1,16 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: migration-job
+  namespace: snack-bar
+spec:
+  template:
+    spec:
+      containers:
+      - name: migration-job
+        image: deborasilveira/snack-bar-api:latest
+        command: ["npx", "prisma", "migrate", "deploy"]
+        env:
+        - name: DATABASE_URL
+          value: "postgresql://root:root@snack-bar-db:5432/snack-api-db"
+      restartPolicy: OnFailure

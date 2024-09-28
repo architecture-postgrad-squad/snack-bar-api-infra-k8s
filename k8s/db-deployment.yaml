@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: snack-bar-db
+  namespace: snack-bar
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: snack-bar-db
+  template:
+    metadata:
+      labels:
+        app: snack-bar-db
+    spec:
+      containers:
+        - env:
+            - name: POSTGRES_DB
+              value: "snack-api-db"
+            - name: POSTGRES_USER
+              value: "root"
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: snack-bar-secrets
+                  key: POSTGRES_PASSWORD
+          name: snack-bar-db
+          image: postgres:12.19
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - name: snack-bar-db-storage
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: snack-bar-db-storage
+          persistentVolumeClaim:
+            claimName: snack-bar-db-pvc
