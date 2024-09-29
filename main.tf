@@ -64,7 +64,7 @@ resource "aws_route_table_association" "snack_bar_rta_2" {
 # EKS cluster setup
 resource "aws_eks_cluster" "snack_bar_eks" {
   name     = "snack-bar-cluster"
-  role_arn = "arn:aws:iam::245351862810:role/LabRole"
+  role_arn = "arn:aws:iam::083022795774:role/LabRole"
 
   vpc_config {
     subnet_ids = [aws_subnet.snack_bar_subnet_1.id, aws_subnet.snack_bar_subnet_2.id]
@@ -75,7 +75,7 @@ resource "aws_eks_cluster" "snack_bar_eks" {
 resource "aws_eks_node_group" "snack_bar_worker_group" {
   cluster_name    = aws_eks_cluster.snack_bar_eks.name
   node_group_name = "snack-bar-worker-group"
-  node_role_arn   = "arn:aws:iam::245351862810:role/LabRole"
+  node_role_arn   = "arn:aws:iam::083022795774:role/LabRole"
   subnet_ids      = [aws_subnet.snack_bar_subnet_1.id, aws_subnet.snack_bar_subnet_2.id]
 
   scaling_config {
