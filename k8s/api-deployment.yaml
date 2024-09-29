@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: snack-bar-api
-          image: deborasilveira/snack-bar-api:latest
+          image: snackbarapi/snack-bar-api:latest
           ports:
             - containerPort: 3000
           env:
@@ -47,7 +47,7 @@ spec:
     spec:
       containers:
         - name: payment-webhook-api
-          image: deborasilveira/payment-webhook-api:latest
+          image: snackbarapi/payment-webhook-api:latest
           ports:
             - containerPort: 3001
           env:
