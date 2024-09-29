@@ -32,11 +32,22 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
+      - name: Check if EKS Cluster Exists
+        id: check_cluster
+        run: |
+          if aws eks describe-cluster --name snack-bar-cluster --region ${{ secrets.AWS_REGION }}; then
+            echo "EKS Cluster exists."
+            echo "##[set-output name=cluster_exists;]true"
+          else
+            echo "EKS Cluster does not exist."
+            echo "##[set-output name=cluster_exists;]false"
+          fi
+
       - name: Terraform Plan
         run: terraform plan
 
-      - name: Terraform Apply
-        if: github.event_name == 'push'
+      - name: Terraform Apply (Create Cluster if Not Exists)
+        if: steps.check_cluster.outputs.cluster_exists == 'false' && github.event_name == 'push'
         run: terraform apply -auto-approve
 
       - name: Install kubectl
